@@ -1,0 +1,38 @@
+# Byte-compiled / cached
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Models (large files)
+models/*.joblib
+
+# Database
+data/predictions.db
+
+# Reports (auto-generated)
+reports/evaluation/*.json
+reports/figures/*.png
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Distribution
+dist/
+build/
+*.egg-info/

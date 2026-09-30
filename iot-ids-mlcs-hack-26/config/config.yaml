@@ -1,0 +1,144 @@
+# ──────────────────────────────────────────────────────────────
+# config.yaml — Central configuration for MLCS-HACK-26 IoT IDS
+# ──────────────────────────────────────────────────────────────
+
+project:
+  name: "MLCS-HACK-26"
+  title: "IoT Intrusion Detection & Risk Analysis"
+  version: "1.0.0"
+
+# ── Paths ────────────────────────────────────────────────────
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  models: "models"
+  reports: "reports"
+  figures: "reports/figures"
+  evaluation: "reports/evaluation"
+
+# ── Dataset ──────────────────────────────────────────────────
+dataset:
+  # Auto-detected label column candidates (checked in order)
+  label_candidates:
+    - "label"
+    - "Label"
+    - "attack"
+    - "Attack"
+    - "class"
+    - "Class"
+    - "category"
+    - "target"
+    - "detailed-label"
+    - "type"
+
+  # If auto-detection fails, set this manually:
+  label_column: null
+
+  # Columns known to be identifiers (not features)
+  id_columns:
+    - "id"
+    - "uid"
+    - "conn_id"
+    - "detailed-label"
+
+  # Timestamp column candidates
+  timestamp_candidates:
+    - "ts"
+    - "timestamp"
+    - "Timestamp"
+    - "datetime"
+    - "time"
+    - "stime"
+    - "ltime"
+
+# ── Label Mapping ────────────────────────────────────────────
+# Maps raw dataset labels → binary class
+# Any label containing these substrings is classified accordingly
+label_mapping:
+  normal_keywords:
+    - "benign"
+    - "normal"
+    - "legitimate"
+    - "background"
+    - "Benign"
+    - "Normal"
+
+  attack_keywords:
+    - "attack"
+    - "malicious"
+    - "anomaly"
+    - "intrusion"
+    - "ddos"
+    - "dos"
+    - "scan"
+    - "bot"
+    - "exploit"
+    - "reconnaissance"
+    - "theft"
+    - "mitm"
+    - "spoofing"
+    - "flood"
+    - "brute"
+    - "injection"
+    - "okiru"
+    - "torii"
+    - "mirai"
+    - "trojan"
+    - "c&c"
+    - "part"
+    - "filedownload"
+    - "heartbeat"
+
+# ── ML Configuration ────────────────────────────────────────
+ml:
+  test_size: 0.2
+  random_state: 42
+  max_samples: 500000  # Limit for large datasets
+  stratify: true
+
+  models:
+    random_forest:
+      n_estimators: 100
+      max_depth: 20
+      min_samples_split: 5
+      min_samples_leaf: 2
+      class_weight: "balanced"
+      n_jobs: -1
+
+# ── Risk Scoring ─────────────────────────────────────────────
+risk_scoring:
+  # Risk = attack_probability * 100
+  # Levels:
+  levels:
+    LOW:
+      min: 0
+      max: 29
+      color: "#00c853"
+    MEDIUM:
+      min: 30
+      max: 59
+      color: "#ff9800"
+    HIGH:
+      min: 60
+      max: 79
+      color: "#ff5722"
+    CRITICAL:
+      min: 80
+      max: 100
+      color: "#d50000"
+
+# ── Database ─────────────────────────────────────────────────
+database:
+  path: "data/predictions.db"
+
+# ── Dashboard ────────────────────────────────────────────────
+dashboard:
+  page_title: "MLCS-HACK-26 — IoT IDS"
+  theme: "dark"
+  sidebar_width: 300
+
+# ── API ──────────────────────────────────────────────────────
+api:
+  host: "127.0.0.1"
+  port: 8000
+  reload: true
